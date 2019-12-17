@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>QVstartClass</class>
- <widget class="QDialog" name="QVstartClass">
+ <class>QVStartClass</class>
+ <widget class="QDialog" name="QVStartClass">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -21,7 +21,7 @@
        <item>
         <widget class="QLabel" name="label_logo">
          <property name="text">
-          <string>TextLabel</string>
+          <string>音速启动</string>
          </property>
         </widget>
        </item>
@@ -53,7 +53,7 @@
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-image: url(:/QVstart/Resources/min.png);</string>
+          <string notr="true">background-image: url(:/QVStart/Resources/min.png);</string>
          </property>
          <property name="text">
           <string/>
@@ -77,11 +77,14 @@
            <height>24</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">background-image: url(:/QVStart/Resources/max.png);</string>
+         </property>
          <property name="text">
           <string/>
          </property>
          <property name="flat">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -100,7 +103,7 @@
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-image: url(:/QVstart/Resources/close.png);</string>
+          <string notr="true">background-image: url(:/QVStart/Resources/close.png);</string>
          </property>
          <property name="text">
           <string/>

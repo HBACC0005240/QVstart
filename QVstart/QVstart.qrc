@@ -1,6 +1,8 @@
 <RCC>
-    <qresource prefix="QVstart">
-      <file>Resources/close.png</file>
-      <file>Resources/min.png</file>
-    </qresource>
+  <qresource prefix="/QVStart">
+    <file>Resources/max.png</file>
+    <file>Resources/close.png</file>
+    <file>Resources/min.png</file>
+    <file>Resources/update.png</file>
+  </qresource>
 </RCC>
