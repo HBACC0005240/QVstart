@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "ITDataMgr.h"
 
-ITDataMgr::ITDataMgr(QObject *parent)
-	: QObject(parent)
+ITDataMgr::ITDataMgr()
 {
 
 }
@@ -12,29 +11,40 @@ ITDataMgr::~ITDataMgr()
 
 }
 
-ITDevice* ITDataMgr::newOneDevice(int nType,ITDevice* pOwer)
+ITDataMgr& ITDataMgr::GetInstance(void)
+{
+	static ITDataMgr dataBaseMgrInstance;
+	return dataBaseMgrInstance;
+}
+
+void ITDataMgr::saveData()
+{
+
+}
+
+ITData* ITDataMgr::newOneData(int nType,ITData* pOwer)
 {
 	if (pOwer == NULL || nType == 0)
 		return NULL;
-	ITDevice* pRet = NULL;
+	ITData* pRet = NULL;
 	{
 
-		if (nType == DT_DIR)
+		if (nType == DT_FileGroup)
 		{
-			pRet = new ITDir("", nType, "");
+			pRet = new ITFileGroup("", nType, "");
 			pRet->setDeviceOwner(pOwer);		
-			if (pOwer->getDevType() == DT_DIR)
+			if (pOwer->getDataType() == DT_FileGroup)
 			{
-				((ITDir*)pOwer)->addChildDir((ITDir*)pRet);
+				((ITFileGroup*)pOwer)->addChildGroup((ITFileGroup*)pRet);
 			}
 		}
 		else if (nType == DT_File)
 		{
 			pRet = new ITFile("", nType, "");
 			pRet->setDeviceOwner(pOwer);
-			if (pOwer->getDevType() == DT_DIR)
+			if (pOwer->getDataType() == DT_FileGroup)
 			{
-				((ITDir*)pOwer)->addChildFile((ITFile*)pRet);
+				((ITFileGroup*)pOwer)->addChildFile((ITFile*)pRet);
 			}
 		}		
 		if (pRet)

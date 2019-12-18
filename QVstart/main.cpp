@@ -12,9 +12,6 @@ int main(int argc, char *argv[])
 	SingleApplication a(argc, argv);
 	if (a.isRunning())
 		return 1;
-
-
-
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
 	QTextCodec::setCodecForLocale(QTextCodec::codecForName("GB2312"));
 #else

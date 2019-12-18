@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "QVStart.h"
 #include "PublicFun.h"
+#include "ITDataMgr.h"
 
 QVStart::QVStart(QWidget *parent, Qt::WindowFlags flags)
 	: QDialog(parent, flags)
@@ -36,7 +37,7 @@ QVStart::QVStart(QWidget *parent, Qt::WindowFlags flags)
 
 QVStart::~QVStart()
 {
-
+	ITDataMgr::GetInstance().saveData();
 }
 
 QString QVStart::ReadIniValString(const QString& strSection, const QString& strKeyword, const QString& strDefault, const QString& strFileName)
@@ -320,7 +321,8 @@ bool QVStart::eventFilter(QObject *obj, QEvent *event)
 			pItem->setData(Qt::UserRole, strFilePath);
 			ui.listWidget->addItem(pItem);
 
-		}
+		}else
+			return QDialog::eventFilter(obj, event);
 		return true;
 	}
 	else
