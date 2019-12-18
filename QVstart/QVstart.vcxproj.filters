@@ -65,9 +65,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_SingleApplication.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="ITDatabaseConnCls.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ITDatabaseConnCls.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -79,6 +76,15 @@
     </ClCompile>
     <ClCompile Include="ITData.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ITDatabaseConn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ITDatabaseConn.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ITDatabaseConn.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -111,11 +117,11 @@
     <CustomBuild Include="SingleApplication.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="ITDatabaseConnCls.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="QVStart.qrc">
       <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ITDatabaseConn.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

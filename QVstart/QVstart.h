@@ -2,6 +2,7 @@
 #define QVSTART_H
 
 #include <QtWidgets/QDialog>
+#include <QSystemTrayIcon>
 #include "ui_QVStart.h"
 #include <string>
 #define UserCfgPath "User/"
@@ -30,7 +31,7 @@ protected:
 	void dragEnterEvent(QDragEnterEvent *event);
 	void dropEvent(QDropEvent *event);
 	bool eventFilter(QObject *obj, QEvent *event);
-	public slots:
+public slots:
 	void doBtnClicked();
 	void doIconActivated(QSystemTrayIcon::ActivationReason reason);
 	void quitAndDeleteAllInfo();

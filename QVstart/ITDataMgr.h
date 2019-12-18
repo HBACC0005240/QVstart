@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "ITData.h"
+#include "ITDatabaseConn.h"
 class ITDataMgr : public QObject
 {
 	Q_OBJECT

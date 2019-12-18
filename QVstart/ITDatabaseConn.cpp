@@ -1,11 +1,15 @@
-ï»¿#include "StdAfx.h"
-#include "ITDataBaseConnCls.h"
-#include <QSqlError>
-ITDBRecordSet::ITDBRecordSet()
+#include "ITDatabaseConn.h"
+#include "time.h"
+#include <QDebug>
+//#include <QSettings>
+//#include <QMessageBox>
+
+
+ITRecordSet::ITRecordSet()
 {
 	m_sqlquery = NULL;
 }
-ITDBRecordSet::~ITDBRecordSet()
+ITRecordSet::~ITRecordSet()
 {
 	if(m_sqlquery!=NULL)
 	{
@@ -14,7 +18,7 @@ ITDBRecordSet::~ITDBRecordSet()
 	}
 }
 
-QString ITDBRecordSet::getStrValue(const QString &strName)
+QString ITRecordSet::getStrValue(const QString &strName)
 {
 	if(m_sqlquery!=NULL)
 	{
@@ -27,7 +31,7 @@ QString ITDBRecordSet::getStrValue(const QString &strName)
 	return "";
 }
 
-int ITDBRecordSet::getIntValue(const QString &strName)
+int ITRecordSet::getIntValue(const QString &strName)
 {
 	if(m_sqlquery!=NULL)
 	{
@@ -40,33 +44,7 @@ int ITDBRecordSet::getIntValue(const QString &strName)
 	return 0;
 }
 
-float ITDBRecordSet::getFloatValue(const QString &strName)
-{
-	if(m_sqlquery!=NULL)
-	{
-		int nameCol = m_sqlquery->record().indexOf(strName);
-		if(nameCol!=-1)
-		{
-			return m_sqlquery->value(nameCol).toFloat();
-		}
-	}
-	return 0;
-}
-
-QByteArray ITDBRecordSet::getByteData(const QString &strName)
-{
-	if(m_sqlquery!=NULL)
-	{
-		int nameCol = m_sqlquery->record().indexOf(strName);
-		if(nameCol!=-1)
-		{
-			return m_sqlquery->value(nameCol).toByteArray();
-		}
-	}
-	return 0;
-}
-
-int ITDBRecordSet::getBitValue(const QString &strName)
+int ITRecordSet::getBitValue(const QString &strName)
 {
 	if(m_sqlquery!=NULL)
 	{
@@ -87,11 +65,49 @@ int ITDBRecordSet::getBitValue(const QString &strName)
 	}
 	return 0;
 }
-bool ITDBRecordSet::next()
+
+float ITRecordSet::getFloatValue(const QString &strName)
+{
+	if(m_sqlquery!=NULL)
+	{
+		int nameCol = m_sqlquery->record().indexOf(strName);
+		if(nameCol!=-1)
+		{
+			return m_sqlquery->value(nameCol).toFloat();
+		}
+	}
+	return 0;
+}
+double ITRecordSet::getDoubleValue(const QString &strName)
+{
+	if (m_sqlquery != NULL)
+	{
+		int nameCol = m_sqlquery->record().indexOf(strName);
+		if (nameCol != -1)
+		{
+			return m_sqlquery->value(nameCol).toDouble();
+		}
+	}
+	return 0;
+}
+
+QByteArray ITRecordSet::getByteData(const QString &strName)
+{
+	if(m_sqlquery!=NULL)
+	{
+		int nameCol = m_sqlquery->record().indexOf(strName);
+		if(nameCol!=-1)
+		{
+			return m_sqlquery->value(nameCol).toByteArray();
+		}
+	}
+	return 0;
+}
+bool ITRecordSet::next()
 {
 	return m_sqlquery->next();
 }
-ITDataBaseConnCls::ITDataBaseConnCls(QString strdbtype)
+ITDataBaseConn::ITDataBaseConn(QString strdbtype)
 {
 	if(strdbtype.contains("SQLServer", Qt::CaseInsensitive) || strdbtype.contains("ODBC", Qt::CaseInsensitive))
 		m_db = QSqlDatabase::addDatabase("QODBC");
@@ -109,12 +125,11 @@ ITDataBaseConnCls::ITDataBaseConnCls(QString strdbtype)
 		m_db = QSqlDatabase::addDatabase("QPSQL", "postgres");
 	else
 		m_db = QSqlDatabase::addDatabase("QODBC");
-
 	m_strDBType = strdbtype;
-	m_pQuery = new QSqlQuery(m_db);
+	m_pQuery = NULL;
 }
 
-ITDataBaseConnCls::~ITDataBaseConnCls()
+ITDataBaseConn::~ITDataBaseConn()
 {
 	m_db.close();
 	if (m_pQuery)
@@ -124,7 +139,7 @@ ITDataBaseConnCls::~ITDataBaseConnCls()
 	}
 }
 
-bool ITDataBaseConnCls::openDataBase( const QString &strDBName,const QString& strhostname,const QString &strUser,const QString &strPwd,int nport )
+bool ITDataBaseConn::openDataBase( const QString &strDBName,const QString& strhostname,const QString &strUser,const QString &strPwd,int nport )
 {
 	QString strDriver;
 	if(m_strDBType.contains("SQLServer",Qt::CaseInsensitive) || m_strDBType.contains("ODBC", Qt::CaseInsensitive))
@@ -161,25 +176,40 @@ bool ITDataBaseConnCls::openDataBase( const QString &strDBName,const QString& st
  		m_db.setPort(nport);
 
 	if(m_db.isOpen())
-    {
-        m_strLastError.clear();
+	{
+		if (m_pQuery)
+		{
+			delete m_pQuery;
+			m_pQuery = nullptr;
+		}
+		if (m_pQuery==nullptr)
+			m_pQuery = new QSqlQuery(m_db);
+		m_strLastError.clear();
 		return true;
-    }else
-    {
-        if(m_db.open() == false)
-        {
-            m_strLastError.clear();
+	}else
+	{
+		if(m_db.open() == false)	//openºó£¬Á¢¼´µ÷ÓÃisOpenÊÇÅÐ¶Ï²»³öÀ´µÄ£¬±ØÐëµÈµ½»á
+		{
+			m_strLastError.clear();
 			m_strLastError = m_db.lastError().text();
 			qDebug()<< m_strLastError;
 			return false;
-        }else
-        {
-            return true;
-        }
-    }
+		}else
+		{		
+			if (m_pQuery)
+			{
+				delete m_pQuery;
+				m_pQuery = nullptr;
+			}
+			if (m_pQuery == nullptr)
+				m_pQuery = new QSqlQuery(m_db);
+			return true;
+		}
+	}
+	return false;
 }
 
-ITDBRecordSet* ITDataBaseConnCls::execQuerySql(const QString &strSql)
+ITRecordSet* ITDataBaseConn::execQuerySql(const QString &strSql)
 {
 	QSqlQuery *pSqlQuery = new QSqlQuery(m_db);
 	if(pSqlQuery)
@@ -187,22 +217,23 @@ ITDBRecordSet* ITDataBaseConnCls::execQuerySql(const QString &strSql)
 		pSqlQuery->clear();
 		if(pSqlQuery->exec(strSql))
 		{
-			ITDBRecordSet* recordset = new ITDBRecordSet;
+			ITRecordSet* recordset = new ITRecordSet;
 			recordset->m_sqlquery = pSqlQuery;
 			return recordset;
-		}
-		else
+		}else
 		{
 			m_strLastError.clear();
 			m_strLastError = pSqlQuery->lastError().text();
-			qDebug() << m_strLastError;
+			qDebug()<< m_strLastError;
 		}
 	}
 	return NULL;
 }
-bool ITDataBaseConnCls::execSql( const QString &strSql )
+bool ITDataBaseConn::execSql( const QString &strSql )
 {
 	bool bSuc = false;
+	if(!m_pQuery)
+		return false;
 	m_pQuery->clear();
 	if(m_pQuery->exec(strSql))
 	{
@@ -211,12 +242,12 @@ bool ITDataBaseConnCls::execSql( const QString &strSql )
 	{
 		m_strLastError.clear();
 		m_strLastError = m_pQuery->lastError().text();
-		qDebug() << m_strLastError;
+		qDebug()<< m_strLastError;
 	}
 	return bSuc;
 }
 
-QSqlQuery* ITDataBaseConnCls::getSqlQuery()
+QSqlQuery* ITDataBaseConn::getSqlQuery()
 {
 	if(m_pQuery==NULL)
 		return NULL;
