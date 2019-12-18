@@ -29,7 +29,7 @@ protected:
 	void closeEvent(QCloseEvent *event);
 	void dragEnterEvent(QDragEnterEvent *event);
 	void dropEvent(QDropEvent *event);
-	bool eventFilter(QObject *, QEvent *);
+	bool eventFilter(QObject *obj, QEvent *event);
 	public slots:
 	void doBtnClicked();
 	void doIconActivated(QSystemTrayIcon::ActivationReason reason);

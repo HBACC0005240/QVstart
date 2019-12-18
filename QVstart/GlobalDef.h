@@ -1,7 +1,7 @@
 #pragma once
-enum ITDevDefType
+enum ITDataDefType
 {
 	DT_None=0x0,		//空
-	DT_DIR=0x100,		//目录
+	DT_FileGroup=0x100,		//目录
 	DT_File=0x200,		//文件
 };

@@ -50,12 +50,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_QVStart.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="ITDevice.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ITDataMgr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ITDataMgr.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -80,6 +74,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ITDatabaseConnCls.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="ITDataMgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ITData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -91,10 +91,10 @@
     <ClInclude Include="..\include\PublicFun.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ITDevice.h">
+    <ClInclude Include="GlobalDef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalDef.h">
+    <ClInclude Include="ITData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

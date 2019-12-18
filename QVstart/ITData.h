@@ -2,11 +2,11 @@
 
 #include "stdafx.h"
 #include "GlobalDef.h"
-class ITDevice;
-class ITDir;
+class ITData;
+class ITFileGroup;
 class ITFile;
-typedef QList<ITDevice*> ITDeviceList;
-typedef QList<ITDir*> ITDirList;
+typedef QList<ITData*> ITDataList;
+typedef QList<ITFileGroup*> ITFileGroupList;
 typedef QList<ITFile*> ITFileList;
 
 //设备状态
@@ -19,12 +19,12 @@ enum ITDevStatus
 };
 
 //基类
-class ITDevice
+class ITData
 {
 public:
-	ITDevice();
-	ITDevice(QString strDeviceName, int nDeviceType, QString strDeviceCode);
-	virtual ~ITDevice();
+	ITData();
+	ITData(QString strDeviceName, int nDeviceType, QString strDataCode);
+	virtual ~ITData();
 
 	//设置状态值
 	int getStatus(void) { return m_nStatus; };
@@ -33,54 +33,54 @@ public:
 	void setEditStatus(void) { if (m_nStatus == ITDEV_STATUS_NORMAL)m_nStatus = ITDEV_STATUS_EDIT; }
 	void setNomalStatus(void) { m_nStatus = ITDEV_STATUS_NORMAL; }
 
-	void setDevType(int nType) { m_nDevType = nType; }
-	int getDevType() { return m_nDevType; }
+	void setDataType(int nType) { m_nDataType = nType; }
+	int getDataType() { return m_nDataType; }
 
-	void setDevCode(const QString& strCode) { m_strDevCode = strCode; }
-	QString getDevCode() { return m_strDevCode; }
+	void setDataCode(const QString& strCode) { m_strDataCode = strCode; }
+	QString getDataCode() { return m_strDataCode; }
 
-	void setDevName(const QString& strName) { m_strDevName = strName; }
-	QString getDevName() { return m_strDevName; }
+	void setDataName(const QString& strName) { m_strDevName = strName; }
+	QString getDataName() { return m_strDevName; }
 
-	void setDevDesc(const QString& strDesc) { m_strDesc = strDesc; }
-	QString getDevDesc() { return m_strDesc; }
+	void setDataDesc(const QString& strDesc) { m_strDesc = strDesc; }
+	QString getDataDesc() { return m_strDesc; }
 
-	void setDeviceOwner(ITDevice *pDevice) { m_pOwner = pDevice; }
-	ITDevice* getDeviceOwner(void) { return m_pOwner; }
+	void setDeviceOwner(ITData *pDevice) { m_pOwner = pDevice; }
+	ITData* getDeviceOwner(void) { return m_pOwner; }
 private:
-	QString m_strDevCode;		//唯一编码
+	QString m_strDataCode;		//唯一编码
 	QString m_strDevName;		//名称
 	QString m_strRemark;		//备注
 	QString m_strDesc;			//描述
 	int m_nStatus;				//设备修改状态, 有修改状态的设备有部门、主机和通道
-	ITDevice*	m_pOwner;		//父节点
-	int m_nDevType;				//类型
+	ITData*	m_pOwner;		//父节点
+	int m_nDataType;				//类型
 };
-class ITDir :public ITDevice
+class ITFileGroup :public ITData
 {
 public:
-	ITDir();
-	ITDir(QString strName, int nDeviceType, QString strDeviceCode);
-	virtual ~ITDir();
+	ITFileGroup();
+	ITFileGroup(QString strName, int nDataType, QString strDataCode);
+	virtual ~ITFileGroup();
 
-	bool addChildDir(ITDir* pDir);
-	bool removeChildDir(ITDir* pDir);
-	void clearAllSubDir() { m_pSubDirList.clear(); }
+	bool addChildGroup(ITFileGroup* pGroup);
+	bool removeChildGroup(ITFileGroup* pGroup);
+	void clearAllSubGroup() { m_pSubGroupList.clear(); }
 
 	bool addChildFile(ITFile* pFile);
 	bool removeChildFile(ITFile* pFile);
 	void clearAllSubFile() { m_pSubFileList.clear(); }
 private:
 	ITFileList m_pSubFileList;	//目录下文件列表
-	ITDirList m_pSubDirList;	//目录下的目录
+	ITFileGroupList m_pSubGroupList;	//目录下的目录
 
 };
 //文件类
-class ITFile :public ITDevice
+class ITFile :public ITData
 {
 public:
 	ITFile();
-	ITFile(QString strName, int nDeviceType, QString strDeviceCode);
+	ITFile(QString strName, int nDataType, QString strDataeCode);
 	virtual ~ITFile();
 
 	void setFileType(const int& nType) { m_nFileType = nType; }
