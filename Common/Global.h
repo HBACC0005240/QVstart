@@ -20,6 +20,10 @@ public:
 	static QString getResourcePath(const QString &fileName);
 
 	static std::shared_ptr<ITProgressBar> s_pProgressBar;
+	QWidget* getMainWidget() { return m_pMainWidget; }
+	void setMainWidget(QWidget* pWidget) { m_pMainWidget = pWidget; }
+private:
+	QWidget* m_pMainWidget;
 };
 
 #endif//WZQ_GLOBAL_H

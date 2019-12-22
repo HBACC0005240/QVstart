@@ -140,6 +140,36 @@
     <ClCompile Include="..\Common\Singleton.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="..\Common\ITApplication.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ITApplication.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ITApplication.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\ITDialogBase.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ITDialogBase.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ITDialogBase.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\ITTreeWidget.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ITTreeWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ITTreeWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\ITLog.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -167,6 +197,9 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\Singleton.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\ITLog.h">
       <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
@@ -202,6 +235,15 @@
       <Filter>Common</Filter>
     </CustomBuild>
     <CustomBuild Include="..\Common\ITToolBar.h">
+      <Filter>Common</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Common\ITApplication.h">
+      <Filter>Common</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Common\ITDialogBase.h">
+      <Filter>Common</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Common\ITTreeWidget.h">
       <Filter>Common</Filter>
     </CustomBuild>
   </ItemGroup>

@@ -1,7 +1,6 @@
 #pragma once
 #include <QMessageBox>
-
-#define ITMessageBox_MainWindow nullptr
+#include "Global.h"
 class ITMessageBox
 {
 public:

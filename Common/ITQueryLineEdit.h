@@ -1,5 +1,5 @@
-#ifndef GBMQUERYLINEEDIT_H
-#define GBMQUERYLINEEDIT_H
+#ifndef ITMQUERYLINEEDIT_H
+#define ITMQUERYLINEEDIT_H
 
 #include <QLineEdit>
 #include "Global.h"
@@ -23,4 +23,4 @@ private:
     ITPushButton* m_pBtnClear;
 };
 
-#endif // GBMQUERYLINEEDIT_H
+#endif // ITMQUERYLINEEDIT_H

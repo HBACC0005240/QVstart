@@ -2,6 +2,7 @@
 #define _ITProgressBar_H
 
 #include <QProgressBar>
+#include <QEventLoop>
 
 #define  CTotalSteps  100  //进度条更新的步数
 
@@ -27,12 +28,16 @@ protected:
 	virtual void showEvent(QShowEvent *e) override;
 	virtual void hideEvent(QHideEvent *e) override;
 
+	void paintEvent(QPaintEvent *);
+
 private:
 	int m_nOneStepValue;
 	int m_nCurrentStep;
 	int m_nCurrentPos;
 	int m_nCount;
 	int m_nMaxRange;
+	QString m_strPrompt;
+	QEventLoop m_eventLoop;
 };
 
 #endif
