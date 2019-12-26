@@ -2,14 +2,14 @@
 #include "QVStart.h"
 #include <QtWidgets/QApplication>
 #include <QString>
-#include "SingleApplication.h"
+#include "ITSingleApplication.h"
 #include <string>
 using namespace std;
 
 int main(int argc, char *argv[])
 {	
 	//	QApplication a(argc, argv);
-	SingleApplication a(argc, argv);
+	ITSingleApplication a(argc, argv);
 	if (a.isRunning())
 		return 1;
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)

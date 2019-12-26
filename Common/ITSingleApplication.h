@@ -1,18 +1,18 @@
-﻿#ifndef SINGLEAPPLICATION_H
-#define SINGLEAPPLICATION_H
+﻿#ifndef ITSINGLEAPPLICATION_H
+#define ITSINGLEAPPLICATION_H
 
 #include <QObject>
 #include <QApplication>
 #include <QtNetwork/QLocalServer>
 #include <QWidget>
 
-class SingleApplication : public QApplication 
+class ITSingleApplication : public QApplication 
 {
 	Q_OBJECT
 
 public:
-	SingleApplication(int &argc, char **argv);
-	~SingleApplication();
+	ITSingleApplication(int &argc, char **argv);
+	~ITSingleApplication();
 
 	/// 是否已经有实例运行
 	bool isRunning();
@@ -34,4 +34,4 @@ private:
 	QString m_strServerName;		///服务名称 
 };
 
-#endif // SINGLEAPPLICATION_H
+#endif // ITSINGLEAPPLICATION_H

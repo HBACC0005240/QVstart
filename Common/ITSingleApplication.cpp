@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "SingleApplication.h"
+#include "ITSingleApplication.h"
 #include <QFileInfo>
 #include <QtNetwork/QLocalSocket>
 #define TIME_OUT 500  /// (ms)
 
-SingleApplication::SingleApplication(int &argc, char **argv)
+ITSingleApplication::ITSingleApplication(int &argc, char **argv)
 	: QApplication (argc,argv),m_pMainWidget(NULL),m_bIsRunning(false),m_pLocalServer(NULL)
 {
 	/// 取应用程序名作为LocalServer的名字
@@ -12,7 +12,7 @@ SingleApplication::SingleApplication(int &argc, char **argv)
 	initLocalConnection();
 }
 
-SingleApplication::~SingleApplication()
+ITSingleApplication::~ITSingleApplication()
 {
 
 }
@@ -23,7 +23,7 @@ SingleApplication::~SingleApplication()
 //返回值：bool
 //时间：2016/11/9 WZQ
 //************************************
-bool SingleApplication::isRunning()
+bool ITSingleApplication::isRunning()
 {
 	return m_bIsRunning;
 }
@@ -34,7 +34,7 @@ bool SingleApplication::isRunning()
 //返回值：无
 //时间：2016/11/9 WZQ
 //************************************
-void SingleApplication::newLocalConnection()
+void ITSingleApplication::newLocalConnection()
 {
 	QLocalSocket* pSocket = m_pLocalServer->nextPendingConnection();
 	if(pSocket != NULL)
@@ -51,7 +51,7 @@ void SingleApplication::newLocalConnection()
 //返回值：void
 //时间：2016/11/9 WZQ
 //************************************
-void SingleApplication::initLocalConnection()
+void ITSingleApplication::initLocalConnection()
 {
 	m_bIsRunning=false;
 	QLocalSocket socket;
@@ -72,7 +72,7 @@ void SingleApplication::initLocalConnection()
 //返回值：void
 //时间：2016/11/9 WZQ
 //************************************
-void SingleApplication::newLocalServer()
+void ITSingleApplication::newLocalServer()
 {
 	m_pLocalServer=new QLocalServer(this);
 	connect(m_pLocalServer,SIGNAL(newConnection()),this,SLOT(newLocalConnection()));
@@ -93,7 +93,7 @@ void SingleApplication::newLocalServer()
 //返回值：void
 //时间：2016/11/9 WZQ
 //************************************
-void SingleApplication::activateWindow()
+void ITSingleApplication::activateWindow()
 {
 	if(m_pMainWidget != NULL)
 	{
@@ -109,7 +109,7 @@ void SingleApplication::activateWindow()
 //返回值：无
 //时间：2016/11/9 WZQ
 //************************************
-void SingleApplication::disLocalConnect()
+void ITSingleApplication::disLocalConnect()
 {
 	disconnect(m_pLocalServer,SIGNAL(newConnection()),this,SLOT(newLocalConnection()));
 }
