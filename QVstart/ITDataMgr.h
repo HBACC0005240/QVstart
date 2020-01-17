@@ -2,7 +2,7 @@
 #define ITDATAMGR_H
 
 #include <QObject>
-#include "ITData.h"
+#include "ITObject.h"
 #include "ITDatabaseConn.h"
 class ITDataMgr : public QObject
 {
@@ -14,14 +14,14 @@ public:
 	static ITDataMgr& GetInstance(void);
 
 	void saveData();
-	ITData* newOneData(int nType, ITData* pOwer);
+	ITObject* newOneData(int nType, ITObject* pOwer);
 
 
 
 	static ITDataMgr dataBaseMgrInstance;
 private:
-	ITDataList m_pDataBaseList;	//所有加载的文件指针
-	ITDataList m_pAddList;	//新加数据
+	ITObjectList m_pDataBaseList;	//所有加载的文件指针
+	ITObjectList m_pAddList;	//新加数据
 };
 
 #endif // ITDATAMGR_H

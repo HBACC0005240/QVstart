@@ -2,7 +2,9 @@
 #include "QVStart.h"
 #include "PublicFun.h"
 #include "ITDataMgr.h"
-
+#include "ITEngine.h"
+#define ICON_WIDTH 100
+#define ICON_HEIGHT 60
 QVStart::QVStart(QWidget *parent, Qt::WindowFlags flags)
 	: QDialog(parent, flags)
 {
@@ -32,12 +34,13 @@ QVStart::QVStart(QWidget *parent, Qt::WindowFlags flags)
 	connect(ui.pushButton_close, SIGNAL(clicked()), this, SLOT(doBtnClicked()));
 	connect(ui.pushButton_min, SIGNAL(clicked()), this, SLOT(doBtnClicked()));
 	connect(ui.pushButton_max, SIGNAL(clicked()), this, SLOT(doBtnClicked()));
-	connect(ui.listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(doListWidgetItemClicked(QListWidgetItem*)));
+	connect(ui.listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(doListWidgetItemClicked(QListWidgetItem*)));
 }
 
 QVStart::~QVStart()
 {
 	ITDataMgr::GetInstance().saveData();
+	ITEngine::GetInstance().saveToDataBase();
 }
 
 QString QVStart::ReadIniValString(const QString& strSection, const QString& strKeyword, const QString& strDefault, const QString& strFileName)
@@ -56,30 +59,72 @@ QString QVStart::ReadIniValString(const QString& strSection, const QString& strK
 //************************************
 void QVStart::initLoadUserCfg()
 {
-	QString strCfgFilePath = QApplication::applicationDirPath() + QString("/%1/user.ini").arg(UserCfgPath);
-	QSettings iniFile(strCfgFilePath, QSettings::IniFormat);
-	iniFile.setIniCodec(QTextCodec::codecForName("GB2312"));
-	iniFile.beginGroup("QStartFiles");
-	int nStartCount = iniFile.value("StartCount", 0).toInt();
-	for (int i = 1; i <= nStartCount; ++i)
+	QString szDBPath = QApplication::applicationDirPath() + "//data//userData.db";
+	bool bRet=ITEngine::GetInstance().connectToDataBase(szDBPath,"SQLITE", "127.0.0.1","","");
+	QSqlTableModel* pGroupTable = ITEngine::GetInstance().getTable("group");
+	QSqlTableModel* pTable = ITEngine::GetInstance().getTable("file");
+	if(pTable)
 	{
-		QString strDirPath = ReadIniValString("QStartFiles", QString("fileDirPath%1").arg(i), "", strCfgFilePath);
-		QString strFilePath = ReadIniValString("QStartFiles", QString("filePath%1").arg(i), "", strCfgFilePath);
-		QString strFileName = ReadIniValString("QStartFiles", QString("fileName%1").arg(i), "", strCfgFilePath);
-		//	QString strDirPath = iniFile.value(QString("fileDirPath%1").arg(i),"").toString();
-		//	QString strFilePath = iniFile.value(QString("filePath%1").arg(i),"").toString();
-		//	QString strFileName = iniFile.value(QString("fileName%1").arg(i),"").toString();
-
-		QFileInfo fileInfo(strFilePath);
-		if (strFileName.isEmpty())
-			strFileName = fileInfo.baseName();
-		QFileIconProvider seekIcon;
-		QIcon icon = seekIcon.icon(fileInfo);
-		QListWidgetItem* pItem = new QListWidgetItem(icon, strFileName);
-		pItem->setData(Qt::UserRole, strFilePath);
-		ui.listWidget->addItem(pItem);
+		/*for (int n = 0; n < pGroupTable->rowCount(); ++n)
+		{
+			quint64 groupID = pGroupTable->record(n).value("id").toULongLong();
+			pTable->setFilter(QString("groupID='%1'").arg(groupID));
+			pTable->select();
+			for (int i = 0; i < pTable->rowCount(); ++i)
+			{
+				QSqlRecord record = pTable->record(i);
+				QString strFilePath = record.value("path").toString();
+				QString strFileName = record.value("name").toString();
+				QFileInfo fileInfo(strFilePath);
+				if (strFileName.isEmpty())
+					strFileName = fileInfo.baseName();
+				QFileIconProvider seekIcon;
+				QIcon icon = seekIcon.icon(fileInfo);
+				QListWidgetItem* pItem = new QListWidgetItem(icon, strFileName);
+				pItem->setData(Qt::UserRole, strFilePath);
+				ui.listWidget->addItem(pItem);
+			}
+		}*/
+		for (int i=0;i<pTable->rowCount();++i)
+		{
+			QSqlRecord record = pTable->record(i);
+			QString strFilePath = record.value("path").toString();
+			QString strFileName = record.value("name").toString();
+			QFileInfo fileInfo(strFilePath);
+			if (strFileName.isEmpty())
+				strFileName = fileInfo.baseName();
+			QFileIconProvider seekIcon;
+			QIcon icon = seekIcon.icon(fileInfo);
+			QListWidgetItem* pItem = new QListWidgetItem(icon, strFileName);
+			pItem->setSizeHint(QSize(ICON_WIDTH,ICON_HEIGHT));
+			pItem->setData(Qt::UserRole, strFilePath);
+			ui.listWidget->addItem(pItem);
+		}
 	}
-	iniFile.endGroup();
+	//QString strCfgFilePath = QApplication::applicationDirPath() + QString("/%1/user.ini").arg(UserCfgPath);
+	//QSettings iniFile(strCfgFilePath, QSettings::IniFormat);
+	//iniFile.setIniCodec(QTextCodec::codecForName("GB2312"));
+	//iniFile.beginGroup("QStartFiles");
+	//int nStartCount = iniFile.value("StartCount", 0).toInt();
+	//for (int i = 1; i <= nStartCount; ++i)
+	//{
+	//	QString strDirPath = ReadIniValString("QStartFiles", QString("fileDirPath%1").arg(i), "", strCfgFilePath);
+	//	QString strFilePath = ReadIniValString("QStartFiles", QString("filePath%1").arg(i), "", strCfgFilePath);
+	//	QString strFileName = ReadIniValString("QStartFiles", QString("fileName%1").arg(i), "", strCfgFilePath);
+	//	//	QString strDirPath = iniFile.value(QString("fileDirPath%1").arg(i),"").toString();
+	//	//	QString strFilePath = iniFile.value(QString("filePath%1").arg(i),"").toString();
+	//	//	QString strFileName = iniFile.value(QString("fileName%1").arg(i),"").toString();
+
+	//	QFileInfo fileInfo(strFilePath);
+	//	if (strFileName.isEmpty())
+	//		strFileName = fileInfo.baseName();
+	//	QFileIconProvider seekIcon;
+	//	QIcon icon = seekIcon.icon(fileInfo);
+	//	QListWidgetItem* pItem = new QListWidgetItem(icon, strFileName);
+	//	pItem->setData(Qt::UserRole, strFilePath);
+	//	ui.listWidget->addItem(pItem);
+	//}
+	//iniFile.endGroup();
 
 }
 void QVStart::closeEvent(QCloseEvent *event)
@@ -320,6 +365,18 @@ bool QVStart::eventFilter(QObject *obj, QEvent *event)
 			QListWidgetItem* pItem = new QListWidgetItem(icon, strFileName);
 			pItem->setData(Qt::UserRole, strFilePath);
 			ui.listWidget->addItem(pItem);
+			QSqlTableModel* pTable = ITEngine::GetInstance().getTable("file");
+			if (pTable)
+			{
+				QSqlRecord record = pTable->record();
+				record.setValue("id", ITObjectID::NewID());
+				record.setValue("name", strFileName);
+				record.setValue("path", strFilePath);
+				record.setValue("icon", strFilePath);
+			//	record.setValue("remark", fileInfo);
+				pTable->insertRecord(pTable->rowCount(),record);
+			
+			}
 
 		}else
 			return QDialog::eventFilter(obj, event);

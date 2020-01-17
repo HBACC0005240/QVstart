@@ -2,10 +2,10 @@
 
 #include "stdafx.h"
 #include "GlobalDef.h"
-class ITData;
+class ITObject;
 class ITFileGroup;
 class ITFile;
-typedef QList<ITData*> ITDataList;
+typedef QList<ITObject*> ITObjectList;
 typedef QList<ITFileGroup*> ITFileGroupList;
 typedef QList<ITFile*> ITFileList;
 
@@ -19,12 +19,12 @@ enum ITDevStatus
 };
 
 //基类
-class ITData
+class ITObject
 {
 public:
-	ITData();
-	ITData(QString strDeviceName, int nDeviceType, QString strDataCode);
-	virtual ~ITData();
+	ITObject();
+	ITObject(QString strDeviceName, int nDeviceType, QString strDataCode);
+	virtual ~ITObject();
 
 	//设置状态值
 	int getStatus(void) { return m_nStatus; };
@@ -45,18 +45,18 @@ public:
 	void setDataDesc(const QString& strDesc) { m_strDesc = strDesc; }
 	QString getDataDesc() { return m_strDesc; }
 
-	void setDeviceOwner(ITData *pDevice) { m_pOwner = pDevice; }
-	ITData* getDeviceOwner(void) { return m_pOwner; }
+	void setDeviceOwner(ITObject *pDevice) { m_pOwner = pDevice; }
+	ITObject* getDeviceOwner(void) { return m_pOwner; }
 private:
 	QString m_strDataCode;		//唯一编码
 	QString m_strDevName;		//名称
 	QString m_strRemark;		//备注
 	QString m_strDesc;			//描述
 	int m_nStatus;				//设备修改状态, 有修改状态的设备有部门、主机和通道
-	ITData*	m_pOwner;		//父节点
+	ITObject*	m_pOwner;		//父节点
 	int m_nDataType;				//类型
 };
-class ITFileGroup :public ITData
+class ITFileGroup :public ITObject
 {
 public:
 	ITFileGroup();
@@ -76,7 +76,7 @@ private:
 
 };
 //文件类
-class ITFile :public ITData
+class ITFile :public ITObject
 {
 public:
 	ITFile();

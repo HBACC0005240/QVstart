@@ -59,16 +59,7 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ITDataMgr.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SingleApplication.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_SingleApplication.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="ITDataMgr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ITData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ITDatabaseConn.cpp">
@@ -176,6 +167,39 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ITSingleApplication.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="..\Common\ITMultiComboBox.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ITMultiComboBox.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ITMultiComboBox.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ITObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ITEngine.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ITEngine.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ITEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ITCore.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ITCore.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="ITCore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\ITObjectID.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -188,9 +212,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GlobalDef.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ITData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\ITMessageBox.h">
@@ -206,6 +227,12 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\ITLog.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ITObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\ITObjectID.h">
       <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
@@ -251,6 +278,15 @@
     </CustomBuild>
     <CustomBuild Include="..\Common\ITSingleApplication.h">
       <Filter>Common</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Common\ITMultiComboBox.h">
+      <Filter>Common</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ITEngine.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ITCore.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

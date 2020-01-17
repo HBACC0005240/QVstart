@@ -109,14 +109,26 @@ bool ITRecordSet::next()
 }
 ITDataBaseConn::ITDataBaseConn(QString strdbtype)
 {
-	if(strdbtype.contains("SQLServer", Qt::CaseInsensitive) || strdbtype.contains("ODBC", Qt::CaseInsensitive))
+	if (strdbtype.contains("SQLServer", Qt::CaseInsensitive) || strdbtype.contains("ODBC", Qt::CaseInsensitive))
+	{
 		m_db = QSqlDatabase::addDatabase("QODBC");
-	else if(strdbtype.contains("Oracle", Qt::CaseInsensitive))
+		m_nDBType = DB_TYPE_SQLSERVER;
+	}
+	else if (strdbtype.contains("Oracle", Qt::CaseInsensitive))
+	{
 		m_db = QSqlDatabase::addDatabase("QOCI");
-	else if(strdbtype.contains("MYSQL", Qt::CaseInsensitive))
+		m_nDBType = DB_TYPE_ORACLE;
+	}
+	else if (strdbtype.contains("MYSQL", Qt::CaseInsensitive))
+	{
 		m_db = QSqlDatabase::addDatabase("QMYSQL");
-	else if(strdbtype.contains("SQLITE", Qt::CaseInsensitive))
+		m_nDBType = DB_TYPE_MYSQL;
+	}
+	else if (strdbtype.contains("SQLITE", Qt::CaseInsensitive))
+	{
 		m_db = QSqlDatabase::addDatabase("QSQLITE");
+		m_nDBType = DB_TYPE_SQLITE;
+	}
 	else if(strdbtype.contains("m", Qt::CaseInsensitive))
 		m_db = QSqlDatabase::addDatabase("QMYSQL"); 
 	else if(strdbtype.contains("O", Qt::CaseInsensitive))

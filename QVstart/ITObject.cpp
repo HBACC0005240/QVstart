@@ -1,12 +1,12 @@
 #include "stdafx.h"
-#include "ITData.h"
+#include "ITObject.h"
 
 
-ITData::ITData()
+ITObject::ITObject()
 {
 	m_nStatus = ITDEV_STATUS_NORMAL;
 }
-ITData::ITData(QString strDataName, int nDataType, QString strDataCode)
+ITObject::ITObject(QString strDataName, int nDataType, QString strDataCode)
 {
 	m_nDataType = nDataType;
 	m_strDataCode = strDataCode;
@@ -15,7 +15,7 @@ ITData::ITData(QString strDataName, int nDataType, QString strDataCode)
 	m_nStatus = ITDEV_STATUS_NORMAL;
 }
 
-ITData::~ITData()
+ITObject::~ITObject()
 {
 }
 
@@ -24,7 +24,7 @@ ITFileGroup::ITFileGroup()
 	
 }
 ITFileGroup::ITFileGroup(QString strName, int nDataType, QString strDataeCode)
-	:ITData(strName, nDataType, strDataeCode)
+	:ITObject(strName, nDataType, strDataeCode)
 {
 
 }
@@ -81,7 +81,7 @@ ITFile::ITFile()
 	m_nFileType = 0;
 }
 ITFile::ITFile(QString strName, int nDataType, QString strDataeCode)
-	:ITData(strName, nDataType, strDataeCode)
+	:ITObject(strName, nDataType, strDataeCode)
 {
 
 }

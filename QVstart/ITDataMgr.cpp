@@ -22,11 +22,11 @@ void ITDataMgr::saveData()
 
 }
 
-ITData* ITDataMgr::newOneData(int nType,ITData* pOwer)
+ITObject* ITDataMgr::newOneData(int nType, ITObject* pOwer)
 {
 	if (pOwer == NULL || nType == 0)
 		return NULL;
-	ITData* pRet = NULL;
+	ITObject* pRet = NULL;
 	{
 
 		if (nType == DT_FileGroup)

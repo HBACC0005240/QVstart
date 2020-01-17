@@ -7,7 +7,14 @@
 #include <QVariant>
 #include <QSqlRecord>
 #include <QSqlError>
-
+enum DataBaseDefine
+{
+	DB_TYPE_NONE = 0,
+	DB_TYPE_SQLSERVER = 1,
+	DB_TYPE_MYSQL = 2,
+	DB_TYPE_ORACLE = 3,
+	DB_TYPE_SQLITE = 4,
+};
 class ITRecordSet
 {
 public:
@@ -32,7 +39,7 @@ public:
 	ITDataBaseConn(const ITDataBaseConn &dataBaseConn){}
 	~ITDataBaseConn();
 	ITDataBaseConn(QString strdbtype);
- 
+
 	bool isValid() {return m_db.isValid();}
 	bool openDataBase(const QString &strDBName,						//´ò¿ªÊý¾Ý¿â
 		               const QString& hostname="",
@@ -43,9 +50,10 @@ public:
 	bool execSql(const QString &strSql);							//Ö´ÐÐSQLÓï¾ä
 
 	ITRecordSet* execQuerySql(const QString &strSql);
-
+	QSqlDatabase &getDataBase() { return m_db; }
 	QSqlQuery* getSqlQuery();
-	QString getCurrentDBType(){return m_strDBType;}
+	int getCurrentDBType() { return m_nDBType; }
+	QString getCurrentDBTypeText(){return m_strDBType;}
 	QString getCurrentDBUser(){return m_strDBUser;}
 	QString getCurrentDBPwd(){return m_strDBPwd;}
 	QString getCurrentDBIpAddr(){return m_strDBIpAddr;}
@@ -58,6 +66,7 @@ private:
 	QString			m_strDBPwd;		//数据库密码
 	QSqlQuery*		m_pQuery;
     QString         m_strLastError; //error info
+	int				m_nDBType;
 };
 
 #endif // ITDATABASECONN_H
