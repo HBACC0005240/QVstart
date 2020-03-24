@@ -1,48 +1,38 @@
 #include "stdafx.h"
-#include "GBMUtil.h"
+#include "ITUtil.h"
 #include <QApplication>
 #include <QFileDialog>
-#include "GLDFileUtils.h"
-#include "GLDZipFile.h"
-#include "GLDTableViewExport.h"
-
-#include "GLDException.h"
 #include <functional>
-#include "GLDXLSModel.h"
-
-QString	GBMUtil::s_szProjPath;
-
-QString	GBMUtil::s_strAppPanSign = "";
-
-GBMExcuteExeThread::GBMExcuteExeThread(QObject *parent, QString sExePath,QStringList sListParameter )
+#include "ITFileUtils.h"
+ITExcuteExeThread::ITExcuteExeThread(QObject *parent, QString sExePath,QStringList sListParameter )
 	:QThread(parent)
 	,m_sExePath(sExePath)
 	,m_sListParameter(sListParameter)
 {
 }
 
-GBMExcuteExeThread::~GBMExcuteExeThread()
+ITExcuteExeThread::~ITExcuteExeThread()
 {
 }
 
-void GBMExcuteExeThread::startThead()
+void ITExcuteExeThread::startThead()
 {
 	start(NormalPriority);
 }
 
-void GBMExcuteExeThread::run()
+void ITExcuteExeThread::run()
 {
 	m_curProcess = new QProcess(this);
 	m_curProcess->start(m_sExePath, m_sListParameter);
 }
 
-void GBMExcuteExeThread::stopThead()
+void ITExcuteExeThread::stopThead()
 {
 	m_curProcess->kill();
 	exit();
 }
 ////////////////////
-bool GBMUtil::writeInit(QString path, QString user_key, QString user_value)
+bool ITUtil::writeInit(QString path, QString user_key, QString user_value)
 {
 	if(path.isEmpty() || user_key.isEmpty())
 	{
@@ -62,7 +52,7 @@ bool GBMUtil::writeInit(QString path, QString user_key, QString user_value)
 	} 
 }
 
-bool GBMUtil::readInit(QString path, QString user_key, QString &user_value)
+bool ITUtil::readInit(QString path, QString user_key, QString &user_value)
 {
 	user_value = QString("");
 	if(path.isEmpty() || user_key.isEmpty())
@@ -81,43 +71,43 @@ bool GBMUtil::readInit(QString path, QString user_key, QString &user_value)
 	}  
 }
 
-void GBMUtil::SetAppPanSignFile(QString strFileName)
+void ITUtil::SetAppPanSignFile(QString strFileName)
 {
 	s_strAppPanSign = strFileName;
 }
 
 
-QString GBMUtil::GetAppPanSignFile()
+QString ITUtil::GetAppPanSignFile()
 {
 	return s_strAppPanSign;
 }
 
-QString GBMUtil::getTemplateRootPath()
+QString ITUtil::getTemplateRootPath()
 {
 	return QApplication::applicationDirPath() + "\\Template";
 }
 
-QString GBMUtil::getTemplatePacketRootPath(const QString& sPath)
+QString ITUtil::getTemplatePacketRootPath(const QString& sPath)
 {
 	return QApplication::applicationDirPath() + "\\TemplatePackets\\" + sPath;
 }
 
-QString GBMUtil::getTemplateFilePath(QString filename)
+QString ITUtil::getTemplateFilePath(QString filename)
 {
 	return getTemplateRootPath() + '\\' + filename;
 }
 
-QString GBMUtil::getGSPTemplateFilePath()
+QString ITUtil::getGSPTemplateFilePath()
 {
 	return getTemplateFilePath("GBMProjectTemplate.GSP");
 }
 
-QString GBMUtil::getProjectsRootPath()
+QString ITUtil::getProjectsRootPath()
 {
 	return QApplication::applicationDirPath() + "\\Projects";
 }  
 
-QString GBMUtil::getProjectRootPath(QString projectPath, bool isCooperate)
+QString ITUtil::getProjectRootPath(QString projectPath, bool isCooperate)
 {
 // 	QString sUserProjectPath = projectPath;
 // 	if(isCooperate)
@@ -136,7 +126,7 @@ QString GBMUtil::getProjectRootPath(QString projectPath, bool isCooperate)
     return "";
 }
 
-QString GBMUtil::getProjectRootPath(QString projectPath)
+QString ITUtil::getProjectRootPath(QString projectPath)
 {
 // 	bool bIsCooperate = true;
 // #ifdef NOAPPINFO
@@ -147,33 +137,33 @@ QString GBMUtil::getProjectRootPath(QString projectPath)
     return "";
 }
 
-QString GBMUtil::getProjectGSPFilePath(QString projectPath)
+QString ITUtil::getProjectGSPFilePath(QString projectPath)
 {
-	return GBMUtil::getProjectRootPath(projectPath) + "\\GBMProjectTemplate.GSP";
+	return ITUtil::getProjectRootPath(projectPath) + "\\GBMProjectTemplate.GSP";
 }
 
-QString GBMUtil::getProjectSqlliteFilePath(QString projectPath)
+QString ITUtil::getProjectSqlliteFilePath(QString projectPath)
 {
-	return GBMUtil::getProjectRootPath(projectPath) + "\\GBMEdoDetailInfo.db";
+	return ITUtil::getProjectRootPath(projectPath) + "\\GBMEdoDetailInfo.db";
 }
 
-QString GBMUtil::getProjectFileRootPath(QString projectPath)
+QString ITUtil::getProjectFileRootPath(QString projectPath)
 {
-	QString dir = GBMUtil::getProjectRootPath(projectPath) + "\\File";
+	QString dir = ITUtil::getProjectRootPath(projectPath) + "\\File";
 	if(!directoryExists(dir))
 		forceDirectories(dir);
 	return dir;
 }
 
-QString GBMUtil::getProjectFilePath(QString projectPath, UINT64 fileID)
+QString ITUtil::getProjectFilePath(QString projectPath, UINT64 fileID)
 {
 	return getProjectFileRootPath(projectPath) + "\\" + QString::number(fileID);
 }
-QString GBMUtil::getProjectGeoRootPath(QString projectPath)
+QString ITUtil::getProjectGeoRootPath(QString projectPath)
 {
 	return getProjectRootPath(projectPath) + "\\geo";
 }
-QString GBMUtil::getProjectOtherGeoRootPath(QString projectPath)
+QString ITUtil::getProjectOtherGeoRootPath(QString projectPath)
 {
 	QString path = getProjectRootPath(projectPath) + "\\OtherGeo";
 	QDir dir(path);
@@ -181,7 +171,7 @@ QString GBMUtil::getProjectOtherGeoRootPath(QString projectPath)
 		dir.mkpath(path);
 	return path;
 }
-QString GBMUtil::getProjectOtherModelRootPath(QString projectPath)
+QString ITUtil::getProjectOtherModelRootPath(QString projectPath)
 {
 	QString path = getProjectRootPath(projectPath) + "\\OtherModel";
 	QDir dir(path);
@@ -190,7 +180,7 @@ QString GBMUtil::getProjectOtherModelRootPath(QString projectPath)
 	return path;
 }
 
-QString GBMUtil::getProjectScreenShotRootPath(QString projectPath)
+QString ITUtil::getProjectScreenShotRootPath(QString projectPath)
 {
 	QString path = getProjectRootPath(projectPath) + "\\ScreenShot";
 	QDir dir(path);
@@ -199,7 +189,7 @@ QString GBMUtil::getProjectScreenShotRootPath(QString projectPath)
 	return path;
 }
 
-QString GBMUtil::getProjectCadRootPath(QString projectPath)
+QString ITUtil::getProjectCadRootPath(QString projectPath)
 {
   QString path = getProjectRootPath(projectPath) + "\\cad";
   QDir dir(path);
@@ -208,7 +198,7 @@ QString GBMUtil::getProjectCadRootPath(QString projectPath)
   return path;
 }
 
-QString GBMUtil::getProjectCadModelRootDir(QString projectPath)
+QString ITUtil::getProjectCadModelRootDir(QString projectPath)
 {
 	QString path = getProjectRootPath(projectPath) + "\\cad\\General";
 	QDir dir(path);
@@ -217,7 +207,7 @@ QString GBMUtil::getProjectCadModelRootDir(QString projectPath)
 	return path;
 }
 
-QString GBMUtil::getProjectMPPRootPath(QString projectPath)
+QString ITUtil::getProjectMPPRootPath(QString projectPath)
 {
 	QString path = getProjectRootPath(projectPath) + "\\SchedulePlanFile";
 	QDir dir(path);
@@ -226,7 +216,7 @@ QString GBMUtil::getProjectMPPRootPath(QString projectPath)
 	return path;
 }
 
-QString GBMUtil::getProjectSyncFilesRootPath( QString projectPath )
+QString ITUtil::getProjectSyncFilesRootPath( QString projectPath )
 {
     QString path = getProjectRootPath(projectPath) + "\\SyncFiles";
     QDir dir(path);
@@ -236,18 +226,18 @@ QString GBMUtil::getProjectSyncFilesRootPath( QString projectPath )
 }
 
 //获取特定工程项目排砖文件夹路径
-QString GBMUtil::getProjectLayBrickDir(QString projectPath)
+QString ITUtil::getProjectLayBrickDir(QString projectPath)
 {
 	return getProjectRootPath(projectPath) + "\\LayBrick\\";
 }
 
-QString GBMUtil::getProjectSyncChangeCachePath( QString projectPath )
+QString ITUtil::getProjectSyncChangeCachePath( QString projectPath )
 {
 	QString path = getProjectSyncFilesRootPath(projectPath) + "\\ChangeCache.gsp";
 	return path;
 }
 
-QString GBMUtil::getProjectCacheLogPath( QString projectPath )
+QString ITUtil::getProjectCacheLogPath( QString projectPath )
 {
     QString path = getProjectSyncFilesRootPath(projectPath) + "\\cacheLog";
     QDir dir(path);
@@ -256,7 +246,7 @@ QString GBMUtil::getProjectCacheLogPath( QString projectPath )
     return path;
 }
 
-QString GBMUtil::getProjectLogBackupPath( QString projectPath )
+QString ITUtil::getProjectLogBackupPath( QString projectPath )
 {
 	QString path = getProjectSyncFilesRootPath(projectPath) + "\\logback";
 	QDir dir(path);
@@ -265,7 +255,7 @@ QString GBMUtil::getProjectLogBackupPath( QString projectPath )
 	return path;
 }
 
-QString GBMUtil::getProjectCachePacketDataRootPath(QString projectPath)
+QString ITUtil::getProjectCachePacketDataRootPath(QString projectPath)
 {
 	QString path = getProjectSyncFilesRootPath(projectPath) + "\\CachePacketData";
 	QDir dir(path);
@@ -274,7 +264,7 @@ QString GBMUtil::getProjectCachePacketDataRootPath(QString projectPath)
 	return path;
 }
 
-QString GBMUtil::getProjectTempPacketRootPath(QString projectPath)
+QString ITUtil::getProjectTempPacketRootPath(QString projectPath)
 {
 	QString path = getProjectSyncFilesRootPath(projectPath) + "\\TempPackets";
 	QDir dir(path);
@@ -283,7 +273,7 @@ QString GBMUtil::getProjectTempPacketRootPath(QString projectPath)
 	return path;
 }
 
-QString GBMUtil::getProjectConstPath(QString projectPath)
+QString ITUtil::getProjectConstPath(QString projectPath)
 {
     QString path = getProjectRootPath(projectPath) + "\\ConsultFiles";
     QDir dir(path);
@@ -292,7 +282,7 @@ QString GBMUtil::getProjectConstPath(QString projectPath)
     return path;
 }
 
-QString GBMUtil::getProjectConstCloudPath(QString projectPath)
+QString ITUtil::getProjectConstCloudPath(QString projectPath)
 {
     QString path = getProjectConstPath(projectPath) + "\\CloudAttach";
     QDir dir(path);
@@ -301,7 +291,7 @@ QString GBMUtil::getProjectConstCloudPath(QString projectPath)
     return path;
 }
 
-QString GBMUtil::getProjectLBfilePath(QString projectPath)
+QString ITUtil::getProjectLBfilePath(QString projectPath)
 {
 	QString path = getProjectRootPath(projectPath);
 	QDir dir(path);
@@ -311,7 +301,7 @@ QString GBMUtil::getProjectLBfilePath(QString projectPath)
 	return path;
 }
 
-QString GBMUtil::getStatAuditFileRootPath(QString projectPath, UINT64 uStatID)
+QString ITUtil::getStatAuditFileRootPath(QString projectPath, UINT64 uStatID)
 {
 	QString path = getProjectRootPath(projectPath) + QString("\\Data\\StatAudit\\%0").arg(uStatID);
 	QDir dir(path);
@@ -319,43 +309,43 @@ QString GBMUtil::getStatAuditFileRootPath(QString projectPath, UINT64 uStatID)
 		dir.mkpath(path);
 	return path;
 }
-QString GBMUtil::getSpecialQueryCfg(QString projectPath)
+QString ITUtil::getSpecialQueryCfg(QString projectPath)
 {
   QString fn = getProjectRootPath(projectPath) + "\\SpecialQuery.txt";
   return fn;  
 }
-QString GBMUtil::getProjectIGMSRootPath(QString projectPath,UINT64 revID)
+QString ITUtil::getProjectIGMSRootPath(QString projectPath,UINT64 revID)
 {
 	return getProjectRootPath(projectPath) + "\\IGMS\\" + QString::number(revID);
 }
 
-QString GBMUtil::getAppTempRootPath()
+QString ITUtil::getAppTempRootPath()
 {
 	return QApplication::applicationDirPath() + "\\temp";	
 }
 
- QString GBMUtil::getQ4CalculatorPath()
+ QString ITUtil::getQ4CalculatorPath()
  {
 	 return QApplication::applicationDirPath() + "\\Q4Calculator\\Q4Calculator.exe"; 
  }
 
- QString GBMUtil::getQ4CalcDataPath(QString projectPath)
+ QString ITUtil::getQ4CalcDataPath(QString projectPath)
  {
 	 return getProjectRootPath(projectPath) + "\\Q4CalcData.GSP";
  }
-QString GBMUtil::getAppPanSymbolPath()
+QString ITUtil::getAppPanSymbolPath()
 {
-	return GBMUtil::getTemplateRootPath() + "\\pansymbol"; 
+	return ITUtil::getTemplateRootPath() + "\\pansymbol"; 
 }
 
-QString GBMUtil::getTemplateMoviePath()
+QString ITUtil::getTemplateMoviePath()
 {
 	return QApplication::applicationDirPath() + "\\TemplateMovie"; 
 }
 
 
 
-QString GBMUtil::getCloudExceptionPath(QString& sFileName)
+QString ITUtil::getCloudExceptionPath(QString& sFileName)
 {
 	QString sDir = QApplication::applicationDirPath() + "\\Error\\Cloud\\LogFile";
 
@@ -365,81 +355,81 @@ QString GBMUtil::getCloudExceptionPath(QString& sFileName)
 
 	return sDir+"\\"+sFileName; 
 }
-QString GBMUtil::getGeoFileName(UINT64 lID)
+QString ITUtil::getGeoFileName(UINT64 lID)
 {
 	return QString("%1.geo").arg(lID);
 }
 
-QString GBMUtil::getToolbarIconPath(QString iconName)
+QString ITUtil::getToolbarIconPath(QString iconName)
 {
 	return ":/ToolButton/Img/Icons/" + iconName;
 }
 
-QString GBMUtil::getIconsPath(const QString& iconName)
+QString ITUtil::getIconsPath(const QString& iconName)
 {
 	return ":/ToolButtonIcon/Res/ToolButtonIcon/" + iconName;
 }
 
-QString GBMUtil::getReportIconsPath(const QString& iconName)
+QString ITUtil::getReportIconsPath(const QString& iconName)
 {
     return ":/ReportIcon/Resources/ReportIcon/" + iconName;
 }
 
-QString GBMUtil::getLayBrickIconsPath(const QString& iconName)
+QString ITUtil::getLayBrickIconsPath(const QString& iconName)
 {
 	return ":/LayBrick/Resources/LayBrick/" + iconName;
 }
 
-QString GBMUtil::getTreeWidgetIconPath(const QString& iconName)
+QString ITUtil::getTreeWidgetIconPath(const QString& iconName)
 {
 	return ":/Icon/Resources/TreeWidget/" + iconName;
 }
 
-QString GBMUtil::getViewerToolButtonIconPath(const QString& szIconName)
+QString ITUtil::getViewerToolButtonIconPath(const QString& szIconName)
 {
 	return QApplication::applicationDirPath() + "\\Share\\ViewCoreResources\\ToolButtonIcons\\" + szIconName;
 }
 
-QString GBMUtil::getNavigatorPath(const QString& iconName)
+QString ITUtil::getNavigatorPath(const QString& iconName)
 {
 	return ":/Navigator/Resources/Navigator/" + iconName;
 }
 
-QString GBMUtil::getMainWindowMenuPath(const QString& iconName)
+QString ITUtil::getMainWindowMenuPath(const QString& iconName)
 {
 	return ":/MainWindow/Resources/MainWindow/" + iconName;
 }
-QString GBMUtil::getFeedBackPath(const QString& iconName)
+QString ITUtil::getFeedBackPath(const QString& iconName)
 {
 	return ":/FeedBack/Resources/MainWindow/FeedBack/" + iconName;
 }
 
-QString GBMUtil::getSkinPath(const QString& iconName)
+QString ITUtil::getSkinPath(const QString& iconName)
 {
 	return ":/Skin/Resources/MainWindow/Skin/" + iconName;
 }
 
-QString GBMUtil::getCursorPath(const QString& iconName)
+QString ITUtil::getCursorPath(const QString& iconName)
 {
 	return ":/Cursor/Resources/Cursor/" + iconName;
 }
 
-QString GBMUtil::getMarkerPath(const QString& iconName)
+QString ITUtil::getMarkerPath(const QString& iconName)
 {
 	return QApplication::applicationDirPath() + "\\Share\\ViewCoreResources\\Markers\\" + iconName;
 }
 
-QString GBMUtil::getStaticMarkerPath(const QString& iconName)
+QString ITUtil::getStaticMarkerPath(const QString& iconName)
 {
 	return ":/Marker/Resources/Marker/" + iconName;
 }
 
-QString GBMUtil::getBarLevelIconsPath(const QString& iconName)
+QString ITUtil::getBarLevelIconsPath(const QString& iconName)
 {
     return ":/BarLevelIcon/Resources/BarLevelIcon/" + iconName;
 }
 
-QString GBMUtil::getGridConfigPath(QString moduleName, QString fileName)
+QString ITUtil::getGridConfigPath(QString moduleName, QString fileName)
 {
 	//if (GBMClientConfig::getInstance()->getProductType() == "ZJ")
 	//{
@@ -457,12 +447,12 @@ QString GBMUtil::getGridConfigPath(QString moduleName, QString fileName)
 	}
 }
 
-QString GBMUtil::getApplicationPath( const QString& iconName )
+QString ITUtil::getApplicationPath( const QString& iconName )
 {
 	return ":/Application/Res/Application/" + iconName;
 }
 
-QString GBMUtil::getApplicationPath2(const QString& iconName)
+QString ITUtil::getApplicationPath2(const QString& iconName)
 {
 	return ":/png/Resources/Application/" + iconName;
 }
@@ -517,7 +507,7 @@ QMessageBox::StandardButton GBMMessageBox::showConfirm( const QString &msg, QMes
 }
 #endif
 /**
- \fn  QString GBMUtil::getCADPaperDir(void)
+ \fn  QString ITUtil::getCADPaperDir(void)
 
  \brief CAD 文件的路径. 
 
@@ -530,22 +520,22 @@ QMessageBox::StandardButton GBMMessageBox::showConfirm( const QString &msg, QMes
 #include "GLDFileUtils.h"
 
 
-QString GBMUtil::getRecentProjectFilePath()
+QString ITUtil::getRecentProjectFilePath()
 {
-	return GBMUtil::getProjectsRootPath() + "\\Recent.GSP";
+	return ITUtil::getProjectsRootPath() + "\\Recent.GSP";
 }
 
-QString GBMUtil::getBarLevelIconFilePath( const QString& iConName )
+QString ITUtil::getBarLevelIconFilePath( const QString& iConName )
 {
 	return QApplication::applicationDirPath()+"\\BarLevelIcon"+"\\"+iConName;
 }
 
-QString GBMUtil::getScheduleTimeStateImagePath( const QString& iConName )
+QString ITUtil::getScheduleTimeStateImagePath( const QString& iConName )
 {
 	return QApplication::applicationDirPath()+"\\ScheduleTimeState"+"\\"+iConName;
 }
 
-bool GBMUtil::copyDirectoryFiles(const QString &fromDir, const QString &toDir, bool coverFileIfExist)
+bool ITUtil::copyDirectoryFiles(const QString &fromDir, const QString &toDir, bool coverFileIfExist)
 {
 	QDir sourceDir(fromDir);  
 	QDir targetDir(toDir);  
@@ -586,7 +576,7 @@ bool GBMUtil::copyDirectoryFiles(const QString &fromDir, const QString &toDir, b
 	return true;  
 }
 
-void GBMUtil::packProject(QString projectPath, UINT64 llProjectID, QDataStream &stream,QString sLastVersion , bool bCooperate)
+void ITUtil::packProject(QString projectPath, UINT64 llProjectID, QDataStream &stream,QString sLastVersion , bool bCooperate)
 {
 	if (directoryExists(projectPath))
 	{
@@ -607,35 +597,35 @@ void GBMUtil::packProject(QString projectPath, UINT64 llProjectID, QDataStream &
 	}
 }
 
-QString GBMUtil::getAppReportConfigPath()
+QString ITUtil::getAppReportConfigPath()
 {
-    return GBMUtil::getTemplateRootPath() + "\\ReportConfig\\";
+    return ITUtil::getTemplateRootPath() + "\\ReportConfig\\";
 }
 
-QString GBMUtil::getProjectReportConfigFile(QString projectPath, QString fileName)
+QString ITUtil::getProjectReportConfigFile(QString projectPath, QString fileName)
 {
-    return GBMUtil::getProjectRootPath(projectPath) + "\\ReportConfig\\" +  fileName;
+    return ITUtil::getProjectRootPath(projectPath) + "\\ReportConfig\\" +  fileName;
 }
 
 //获取质量安全整改单目录
-QString GBMUtil::getNoticeFileDir()
+QString ITUtil::getNoticeFileDir()
 {
-	return GBMUtil::getTemplateRootPath() + "\\NoticeFile\\";
+	return ITUtil::getTemplateRootPath() + "\\NoticeFile\\";
 }
 
 //获取skp匹配规则配置文件
-QString GBMUtil::getSkpConfigPath()
+QString ITUtil::getSkpConfigPath()
 {
 	return QApplication::applicationDirPath() + "\\Template\\SKP2BIM5DConfig.GSP";
 }
 
 //获取排砖数据文件目录
-QString GBMUtil::getLayBrickTemplateDir()
+QString ITUtil::getLayBrickTemplateDir()
 {
-	return GBMUtil::getTemplateRootPath() + "\\LayBrick\\";
+	return ITUtil::getTemplateRootPath() + "\\LayBrick\\";
 }
 
-void GBMUtil::doExportExcel(GlodonTableView *tableView, QString &pageName)
+void ITUtil::doExportExcel(GlodonTableView *tableView, QString &pageName)
 {
 	if (tableView == NULL)
 		return;
@@ -645,7 +635,7 @@ void GBMUtil::doExportExcel(GlodonTableView *tableView, QString &pageName)
 	GlodonTableViewToExcel::execute(tableView, sExcelFile, pageName);
 }
 
-void GBMUtil::doExportExcel(GlodonTableView *tableView, const QString& filePath ,QString &pageName)
+void ITUtil::doExportExcel(GlodonTableView *tableView, const QString& filePath ,QString &pageName)
 {
 	if(filePath.isEmpty())
 		return;
@@ -659,7 +649,7 @@ void GBMUtil::doExportExcel(GlodonTableView *tableView, const QString& filePath 
 	}
 }
 
-void GBMUtil::doExportExcel(GlodonTableView *tableView, const QString& filePath, QString &pageName, const QMap<QPair<int, int>, QString>& mapData)
+void ITUtil::doExportExcel(GlodonTableView *tableView, const QString& filePath, QString &pageName, const QMap<QPair<int, int>, QString>& mapData)
 {
 	if (filePath.isEmpty())
 		return;
@@ -676,7 +666,7 @@ void GBMUtil::doExportExcel(GlodonTableView *tableView, const QString& filePath,
 	}
 }
 
-void GBMUtil::writeSheetExternData(const QString& filePath, const QMap<QPair<int, int>, QString>& mapData)
+void ITUtil::writeSheetExternData(const QString& filePath, const QMap<QPair<int, int>, QString>& mapData)
 {
 	GlodonXLSModel excelModel;
 	if (true == excelModel.load(filePath))
@@ -702,7 +692,7 @@ void GBMUtil::writeSheetExternData(const QString& filePath, const QMap<QPair<int
 
 
 // panl-c-zx 2018.12.26 导出Excel时，添加表头 - 序号
-void GBMUtil::writeSheetHead(QString filePath, QString  headName)
+void ITUtil::writeSheetHead(QString filePath, QString  headName)
 {
     GlodonXLSModel excelModel;
     if (true == excelModel.load(filePath))
@@ -726,7 +716,7 @@ void GBMUtil::writeSheetHead(QString filePath, QString  headName)
     }
 }
 
-QString GBMUtil::getFileHashValue(QString& stFilePath )
+QString ITUtil::getFileHashValue(QString& stFilePath )
 {
 	QFile file(stFilePath);
 	if(file.open(QIODevice::ReadWrite))
@@ -743,7 +733,7 @@ QString GBMUtil::getFileHashValue(QString& stFilePath )
 	return QString();
 }
 
-std::wstring GBMUtil::String2WString(const std::string& s)
+std::wstring ITUtil::String2WString(const std::string& s)
 {
 	std::wstring wszStr;
 
@@ -757,7 +747,7 @@ std::wstring GBMUtil::String2WString(const std::string& s)
 	return wszStr;
 }
 
-QString GBMUtil::GetTempDir()
+QString ITUtil::GetTempDir()
 {
 // 	QString tempDir = QDir::tempPath() + QString("/%0").arg(GObjectID::NewID());
 // 	forceDirectories(tempDir);
@@ -766,7 +756,7 @@ QString GBMUtil::GetTempDir()
 }
 
 //从注册表获取默认的路径
-QString GBMUtil::getRegEditDefaultPath()
+QString ITUtil::getRegEditDefaultPath()
 {
 	QSettings *reg = new QSettings("HKEY_LOCAL_MACHINE\\Software\\Glodon\\GBIM",  QSettings::NativeFormat);   
 	QString result = reg->value("WorkSpace").toString();
@@ -774,14 +764,14 @@ QString GBMUtil::getRegEditDefaultPath()
 	return result;
 }
 
-void GBMUtil::setRegEditDefaultPath(QString sPath)
+void ITUtil::setRegEditDefaultPath(QString sPath)
 {
 	QSettings *reg = new QSettings("HKEY_LOCAL_MACHINE\\Software\\Glodon\\GBIM",  QSettings::NativeFormat);   
 	reg->setValue("WorkSpace", sPath);
 	delete reg;
 }
 
-QString GBMUtil::getStringHashValue( QString& sStringContent )
+QString ITUtil::getStringHashValue( QString& sStringContent )
 {
 	QByteArray byte_array;
 	byte_array.append(sStringContent);
@@ -790,7 +780,7 @@ QString GBMUtil::getStringHashValue( QString& sStringContent )
 	return md5;
 }
 
-QString GBMUtil::getB5DPath( QString projectPath )
+QString ITUtil::getB5DPath( QString projectPath )
 {
 	QStringList strB5DFileList;
 	findFiles(projectPath, QString("*.B5D"), strB5DFileList);
@@ -801,54 +791,54 @@ QString GBMUtil::getB5DPath( QString projectPath )
 		return QString("");
 }
 
-QString GBMUtil::getHistoryTemplateFilePath( QString strFileName, int nVersion )
+QString ITUtil::getHistoryTemplateFilePath( QString strFileName, int nVersion )
 {
 	return getTemplateRootPath() + '\\' + "History" + "\\" + QString("%1").arg(nVersion) + "\\" + strFileName;
 }
 
 //获取报表历史版本模板文件
-QString GBMUtil::getReportHistoryTemplatePath(QString strFileName, int nVersion)
+QString ITUtil::getReportHistoryTemplatePath(QString strFileName, int nVersion)
 {
-	return GBMUtil::getTemplateRootPath() + "\\History\\Report\\" + QString("%1").arg(nVersion) + "\\" + strFileName;
+	return ITUtil::getTemplateRootPath() + "\\History\\Report\\" + QString("%1").arg(nVersion) + "\\" + strFileName;
 }
 
-QString GBMUtil::getDemoProjectPath()
+QString ITUtil::getDemoProjectPath()
 {
 	 return QApplication::applicationDirPath() + "\\demo\\" + "Demo.P5D" ;
 }
 
 
-QString GBMUtil::getAppUserFile()
+QString ITUtil::getAppUserFile()
 {
     return QApplication::applicationDirPath()+"\\user.dat";
 }
 
-QString GBMUtil::getProductConfigPath()
+QString ITUtil::getProductConfigPath()
 {
 	return ":/ProductConfig/Resources/ProductConfig/ProductConfig.GSP";
 }
-QString GBMUtil::getProductCooperateCachePath(const QString &projectPath)
+QString ITUtil::getProductCooperateCachePath(const QString &projectPath)
 {
 	return getProjectRootPath(projectPath) + "\\SyncFiles\\" + "CooperateCache.GSP";
 }
 
-QString GBMUtil::getAdminManageToolConfig( const QString& sName )
+QString ITUtil::getAdminManageToolConfig( const QString& sName )
 {
 	return ":/AdminManage/Resources/config/AdminManage/"+sName;
 }
 
 
-QString GBMUtil::GetConfigDirPath()
+QString ITUtil::GetConfigDirPath()
 {
 	return ":/config/Resources/config";
 }
 
-QString GBMUtil::getPropSetCacheFilePath( const QString &projectPath )
+QString ITUtil::getPropSetCacheFilePath( const QString &projectPath )
 {
 	return getProjectRootPath(projectPath) + "\\SyncFiles\\" + "SQLLiteDelta.GSP";
 }
 
-bool GBMUtil::checkContainCN( const QString& str )
+bool ITUtil::checkContainCN( const QString& str )
 {
 	QRegExp rx("[\u4e00-\u9fa5]");//
 	bool bRet = str.contains(rx);
@@ -857,7 +847,7 @@ bool GBMUtil::checkContainCN( const QString& str )
 }
 
 // 得到报表引擎路径
-QString GBMUtil::getGRPEnginePath()
+QString ITUtil::getGRPEnginePath()
 {
 #ifdef QT_DEBUG
 	return exePath() + "GRPEngined.dll";
@@ -866,7 +856,7 @@ QString GBMUtil::getGRPEnginePath()
 #endif
 }
 
-QString GBMUtil::getConsultSynergyFilePath()
+QString ITUtil::getConsultSynergyFilePath()
 {
     return getTemplateFilePath("SynergyData.GSP");
 }

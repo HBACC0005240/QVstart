@@ -11,11 +11,11 @@
 
 using namespace std;
 
-class GBMExcuteExeThread:public QThread
+class ITExcuteExeThread:public QThread
 {
 public:
-	GBMExcuteExeThread(QObject *parent,QString sExePath,QStringList sListParameter);
-	~GBMExcuteExeThread();
+	ITExcuteExeThread(QObject *parent,QString sExePath,QStringList sListParameter);
+	~ITExcuteExeThread();
 
 	void startThead();
 	void stopThead();
@@ -27,28 +27,7 @@ private:
 	QProcess *  m_curProcess;
 };
 
-struct ST_ProjectInfo
-{
-	UINT64 uProjectID;
-	QString stName;
-	QString stAddr;
-	double  stScale;
-	float   fContractValue;
-	float   fStartDate;
-	float   fEndDate;
-	QString stInvestor;
-	QString stDesigningComp;
-	QString stConstructionComp;
-	QString stRemark;
-	QString stProjectPath;
-	bool isCooperateProject;
-    // 添加项目类型 panl-c 2019.08.06
-    int  projectModule;
-};
-
-class GlodonTableView;
-class GlodonTableViewToExcel;
-class GBMUtil
+class ITUtil
 {
 
 public:
