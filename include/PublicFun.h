@@ -196,3 +196,127 @@ static std::vector<std::string> string_split(std::string str,std::string pattern
 	}
 	return result;
 }
+
+static QStringList splitTextForDigit(const QString& szText)
+{
+	if (szText.size() < 1)
+		return QStringList();
+	QStringList szSplitList;
+	bool bLastDigit = szText.at(0).isDigit();	//true数字 false字符串
+	QString szTempText;
+	for (int i = 0; i < szText.size(); ++i)
+	{
+		if (szText.at(i).isDigit()== bLastDigit)
+		{
+			szTempText += szText.at(i);
+		}
+		else
+		{//字符变更
+			bLastDigit = szText.at(i).isDigit();
+			szSplitList.append(szTempText);
+			szTempText.clear();
+			szTempText += szText.at(i);
+		}
+	}
+	szSplitList.append(szTempText);
+	return szSplitList;
+}
+static bool isDigitString(const QString& szText)
+{
+	for (int i = 0; i < szText.size(); ++i)
+	{
+		if (szText.at(i).isDigit()==false)
+			return false;
+	}
+	return true;
+}
+static int getPreStrLen(const QString& szText)
+{
+	int num = 0;
+	for (int i = 0; i < szText.size(); ++i)
+	{
+		if (szText.at(i).isDigit())
+			return num;
+		else
+			num += 1;
+	}
+	return num;
+}
+
+static int getPreNumLen(const QString& szText)
+{
+	int num = 0;
+	for (int i = 0; i < szText.size(); ++i)
+	{
+		if (!szText.at(i).isDigit())
+			return num;
+		else
+			num += 1;
+	}
+	return num;
+}
+static int SingleComapreString(const QString& s1, const QString& s2)
+{
+	if (isDigitString(s1) && isDigitString(s2))
+	{
+		int n1 = s1.toInt();
+		int n2 = s2.toInt();
+		if (n1 < n2)
+			return -1;
+		else if (n1 == n2)
+			return 0;
+		else
+			return 1;
+	}
+	else
+	{
+		return s1.compare(s2);	//返回qt的比对
+	}
+}
+//相等0  小于-1  大于1
+static int customCompareString(const QString& s1, const QString& s2)
+{
+	//
+	if (isDigitString(s1) && isDigitString(s2))
+	{//直接比较 或者调用API 中英文混杂数据
+		return SingleComapreString(s1,s2);
+	}
+	else
+	{//中英文数字混杂
+		//只进行数字和其他的区分，都对数字敏感，其他英文和中文这些只要有顺序就行
+		//分段比较  中文比较中文 英文比较英文  一样的才进行此操作
+		//以s1为模板 取数字和字符串区分
+		QStringList s1List = splitTextForDigit(s1);
+		QStringList s2List = splitTextForDigit(s2);
+		int nCount = s1List.size() > s2List.size() ? s2List.size() : s1List.size();
+		for (int i = 0; i < nCount; ++i)
+		{
+			int nCompareResult = SingleComapreString(s1List.at(i), s2List.at(i));
+			if (nCompareResult == 0)//相等就循环比对  不相等就比较
+			{
+				continue;
+			}
+			else
+			{//增加字符串 数字判断  两个都为数字 就数字比较，否则 全按字符串比较			
+				//qt的sort貌似 只有true false 才会swap
+				if (nCompareResult < 0)//s1<s2
+					return true;
+				else
+					return false;
+			}				
+		}
+
+		//一样 比对最后一次的数据
+		QString szTemp1 = s1List.at(nCount-1);
+		QString szTemp2 = s2List.at(nCount - 1);
+		int nCompareResult = SingleComapreString(szTemp1, szTemp2);
+		if (nCompareResult < 0)//s1<s2
+			return true;
+		else if(nCompareResult > 0)
+			return false;
+		else//上面for循环比对的只是按最少的循环 这里判断 如果前面全一致，后面哪个数据多 就排后面或前面 例如KL1 KL1(1) 
+		{
+			return s1List.size() > s2List.size() ? false : true;//正序 0 1 2   true:false  逆序
+		}
+	}
+}

@@ -200,6 +200,12 @@
     <ClCompile Include="..\Common\ITObjectID.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="ITCollator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ITCollator_win.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -234,6 +240,12 @@
     </ClInclude>
     <ClInclude Include="..\Common\ITObjectID.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ITCollator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ITCollator_p.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
