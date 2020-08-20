@@ -206,6 +206,9 @@
     <ClCompile Include="ITCollator_win.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="YunLai.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -245,6 +248,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ITCollator_p.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="YunLai.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
